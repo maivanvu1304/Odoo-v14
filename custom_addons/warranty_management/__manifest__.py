@@ -20,16 +20,21 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base'],
+    # product is required because tickets link to products via Many2one
+    'depends': ['base', 'product'],
 
     # always loaded
     'data': [
-        # 'security/ir.model.access.csv',
-        'views/views.xml',
-        'views/templates.xml',
+        "security/security.xml",
+        "security/ir.model.access.csv",
+        "data/sequence.xml",
+        "views/warranty_ticket_views.xml",
+        "wizard/warranty_close_wizard_views.xml",
     ],
     # only loaded in demonstration mode
     'demo': [
         'demo/demo.xml',
     ],
+    "application": True,
+    "installable": True,
 }

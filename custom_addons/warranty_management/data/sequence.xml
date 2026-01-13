@@ -1,0 +1,8 @@
+<odoo>
+  <record id="seq_warranty_ticket" model="ir.sequence">
+    <field name="name">Warranty Ticket</field>
+    <field name="code">warranty.ticket</field>
+    <field name="prefix">WT</field>
+    <field name="padding">4</field>
+  </record>
+</odoo>

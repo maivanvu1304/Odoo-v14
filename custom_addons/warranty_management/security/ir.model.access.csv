@@ -1,2 +1,5 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_warranty_management_warranty_management,warranty_management.warranty_management,model_warranty_management_warranty_management,base.group_user,1,1,1,1
+access_warranty_ticket_user,warranty.ticket user,model_warranty_ticket,base.group_user,1,0,0,0
+access_warranty_ticket_line_user,warranty.ticket.line user,model_warranty_ticket_line,base.group_user,1,0,0,0
+access_warranty_ticket_manager,warranty.ticket manager,model_warranty_ticket,warranty_management.group_warranty_manager,1,1,1,1
+access_warranty_ticket_line_manager,warranty.ticket.line manager,model_warranty_ticket_line,warranty_management.group_warranty_manager,1,1,1,1
