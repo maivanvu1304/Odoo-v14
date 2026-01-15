@@ -5,6 +5,7 @@ from dateutil.relativedelta import relativedelta
 
 class WarrantyTicket(models.Model):
     _name = "warranty.ticket"
+    _inherit = ["mail.thread", "mail.activity.mixin"]
     _description = "Warranty Ticket"
     _order = "id desc"
 

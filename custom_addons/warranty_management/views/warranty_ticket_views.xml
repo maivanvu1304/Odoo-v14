@@ -1,15 +1,114 @@
 <odoo>
 
-  <!-- Action -->
+  <!-- ========== ACTIONS ========== -->
+  
+  <!-- Main action: All tickets -->
   <record id="action_warranty_ticket" model="ir.actions.act_window">
     <field name="name">Warranty Tickets</field>
     <field name="res_model">warranty.ticket</field>
-    <field name="view_mode">tree,form</field>
+    <field name="view_mode">tree,form,kanban</field>
   </record>
 
-  <!-- Menus -->
-  <menuitem id="menu_warranty_root" name="Warranty" sequence="10"/>
-  <menuitem id="menu_warranty_tickets" name="Tickets" parent="menu_warranty_root" action="action_warranty_ticket" sequence="10"/>
+  <!-- Filtered action: In Progress tickets only -->
+  <record id="action_warranty_ticket_in_progress" model="ir.actions.act_window">
+    <field name="name">In Progress Tickets</field>
+    <field name="res_model">warranty.ticket</field>
+    <field name="view_mode">tree,form</field>
+    <field name="domain">[('state', '=', 'in_progress')]</field>
+    <field name="context">{'default_state': 'in_progress'}</field>
+  </record>
+
+  <!-- Filtered action: Expired warranties -->
+  <record id="action_warranty_ticket_expired" model="ir.actions.act_window">
+    <field name="name">Expired Warranties</field>
+    <field name="res_model">warranty.ticket</field>
+    <field name="view_mode">tree,form</field>
+    <field name="domain">[('expire_date', '&lt;', context_today())]</field>
+  </record>
+
+  <!-- Action: Draft tickets for managers -->
+  <record id="action_warranty_ticket_draft" model="ir.actions.act_window">
+    <field name="name">Draft Tickets</field>
+    <field name="res_model">warranty.ticket</field>
+    <field name="view_mode">tree,form</field>
+    <field name="domain">[('state', '=', 'draft')]</field>
+  </record>
+
+  <!-- ========== MENU STRUCTURE ========== -->
+  
+  <!-- 
+    ROOT MENU 
+    - Appears in top menu bar
+    - No action = just a container
+    - sequence: determines position (lower = more left)
+  -->
+  <menuitem 
+    id="menu_warranty_root" 
+    name="Warranty" 
+    sequence="10"
+    web_icon="warranty_management,static/description/icon.png"/>
+
+  <!-- 
+    LEVEL 1: Main submenu with action
+    - parent: links to root menu
+    - action: what opens when clicked
+  -->
+  <menuitem 
+    id="menu_warranty_tickets" 
+    name="Tickets" 
+    parent="menu_warranty_root" 
+    action="action_warranty_ticket" 
+    sequence="10"/>
+
+  <!-- 
+    LEVEL 1: Submenu without action (container for Level 2)
+    - No action = opens submenu only
+  -->
+  <menuitem 
+    id="menu_warranty_reports" 
+    name="Reports" 
+    parent="menu_warranty_root" 
+    sequence="20"/>
+
+  <!-- 
+    LEVEL 2: Nested submenu items under Reports
+  -->
+  <menuitem 
+    id="menu_warranty_report_in_progress" 
+    name="In Progress" 
+    parent="menu_warranty_reports" 
+    action="action_warranty_ticket_in_progress" 
+    sequence="10"/>
+
+  <menuitem 
+    id="menu_warranty_report_expired" 
+    name="Expired Warranties" 
+    parent="menu_warranty_reports" 
+    action="action_warranty_ticket_expired" 
+    sequence="20"/>
+
+  <!-- 
+    LEVEL 1: Configuration menu (only for Warranty Managers)
+    - groups: restricts visibility to specific security groups
+  -->
+  <menuitem 
+    id="menu_warranty_configuration" 
+    name="Configuration" 
+    parent="menu_warranty_root" 
+    sequence="90"
+    groups="warranty_management.group_warranty_manager"/>
+
+  <!-- 
+    LEVEL 2: Settings under Configuration
+  -->
+  <menuitem 
+    id="menu_warranty_draft_tickets" 
+    name="Draft Tickets" 
+    parent="menu_warranty_configuration" 
+    action="action_warranty_ticket_draft" 
+    sequence="10"
+    groups="warranty_management.group_warranty_manager"/>
+
 
   <!-- Search view -->
   <record id="view_warranty_ticket_search" model="ir.ui.view">
@@ -103,6 +202,11 @@
             </page>
           </notebook>
         </sheet>
+        <div class="oe_chatter">
+          <field name="message_follower_ids" widget="mail_followers"/>
+          <field name="activity_ids" widget="mail_activity"/>
+          <field name="message_ids" widget="mail_thread"/>
+        </div>
       </form>
     </field>
   </record>

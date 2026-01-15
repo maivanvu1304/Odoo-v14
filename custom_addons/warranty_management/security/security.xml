@@ -1,6 +1,14 @@
 <odoo>
+  <!-- Warranty User: basic access to view and create tickets -->
+  <record id="group_warranty_user" model="res.groups">
+    <field name="name">Warranty User</field>
+    <field name="category_id" ref="base.module_category_services"/>
+  </record>
+
+  <!-- Warranty Manager: full access including delete -->
   <record id="group_warranty_manager" model="res.groups">
     <field name="name">Warranty Manager</field>
     <field name="category_id" ref="base.module_category_services"/>
+    <field name="implied_ids" eval="[(4, ref('group_warranty_user'))]"/>
   </record>
 </odoo>
