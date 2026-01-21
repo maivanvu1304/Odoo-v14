@@ -31,6 +31,13 @@ class WarrantyTicket(models.Model):
         tracking=True,
     )
 
+    user_id = fields.Many2one(
+        "res.users",
+        string="Assigned User",
+        default=lambda self: self.env.user,
+        tracking=True,
+    )
+
     line_ids = fields.One2many("warranty.ticket.line", "ticket_id", string="Lines")
     line_count = fields.Integer(string="Line Count", compute="_compute_line_count", store=True)
 
@@ -70,6 +77,7 @@ class WarrantyTicket(models.Model):
     def create(self, vals):
         if vals.get("name", "New") == "New":
             vals["name"] = self.env["ir.sequence"].next_by_code("warranty.ticket") or "New"
+        vals.setdefault("user_id", self.env.uid)
         return super().create(vals)
 
     # ===== State actions (buttons) =====

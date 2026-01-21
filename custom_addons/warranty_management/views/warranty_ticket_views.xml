@@ -114,61 +114,64 @@
   <record id="view_warranty_ticket_search" model="ir.ui.view">
     <field name="name">warranty.ticket.search</field>
     <field name="model">warranty.ticket</field>
-    <field name="arch" type="xml">
+        <field name="arch" type="xml">
       <search>
         <field name="name"/>
         <field name="customer_id"/>
         <field name="product_id"/>
         <field name="serial_no"/>
+        <field name="user_id"/>
         <filter string="Expired" name="expired" domain="[('expire_date','&lt;', context_today())]"/>
         
         <group expand="0" string="Group By">
           <filter name="group_customer" string="Customer" context="{'group_by': 'customer_id'}"/>
           <filter name="group_product" string="Product" context="{'group_by': 'product_id'}"/>
           <filter name="group_state" string="Status" context="{'group_by': 'state'}"/>
+          <filter name="group_user" string="Assigned User" context="{'group_by': 'user_id'}"/>
         </group>
       </search>
-    </field>
+        </field>
   </record>
 
   <!-- Tree view -->
   <record id="view_warranty_ticket_tree" model="ir.ui.view">
     <field name="name">warranty.ticket.tree</field>
     <field name="model">warranty.ticket</field>
-    <field name="arch" type="xml">
+        <field name="arch" type="xml">
       <tree>
         <field name="name"/>
         <field name="customer_id"/>
         <field name="product_id"/>
+        <field name="user_id"/>
         <field name="purchase_date"/>
         <field name="expire_date"/>
         <field name="state"/>
       </tree>
-    </field>
+        </field>
   </record>
 
   <!-- Form view -->
   <record id="view_warranty_ticket_form" model="ir.ui.view">
     <field name="name">warranty.ticket.form</field>
     <field name="model">warranty.ticket</field>
-    <field name="arch" type="xml">
+        <field name="arch" type="xml">
       <form string="Warranty Ticket">
         <header>
           <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,in_progress,done,cancel"/>
 
           <button name="action_confirm" type="object" string="Confirm" class="btn-primary"
-                  states="draft"/>
+                  states="draft" confirm="Are you sure you want to confirm this warranty ticket?"/>
           <button name="action_start" type="object" string="Start" class="btn-primary"
-                  states="confirmed"/>
+                  states="confirmed" confirm="Are you sure you want to start working on this ticket?"/>
           <button name="action_done" type="object" string="Done" class="btn-primary"
-                  states="in_progress"/>
+                  states="in_progress" confirm="Are you sure you want to mark this ticket as done?"/>
           <button name="action_open_close_wizard" type="object" string="Close with note"
                   class="btn-secondary" states="confirmed,in_progress"/>
 
           <button name="action_cancel" type="object" string="Cancel" class="btn-secondary"
-                  states="draft,confirmed,in_progress"/>
+                  states="draft,confirmed,in_progress" confirm="Are you sure you want to cancel this warranty ticket?"/>
           <button name="action_set_draft" type="object" string="Set to Draft" class="btn-secondary"
-                  states="cancel"/>
+                  states="cancel" confirm="Are you sure you want to reset this ticket to draft?"/>
         </header>
 
         <sheet>
@@ -178,6 +181,7 @@
             <field name="phone"/>
             <field name="product_id"/>
             <field name="serial_no"/>
+            <field name="user_id"/>
           </group>
 
           <group>

@@ -1,14 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
-  <!-- Warranty User: basic access to view and create tickets -->
-  <record id="group_warranty_user" model="res.groups">
-    <field name="name">Warranty User</field>
-    <field name="category_id" ref="base.module_category_services"/>
+  <record id="module_category_warranty" model="ir.module.category">
+    <field name="name">Warranty</field>
+    <field name="sequence">30</field>
   </record>
 
-  <!-- Warranty Manager: full access including delete -->
+  <record id="group_warranty_user" model="res.groups">
+    <field name="name">Warranty User</field>
+    <field name="category_id" ref="warranty_management.module_category_warranty"/>
+  </record>
+
   <record id="group_warranty_manager" model="res.groups">
     <field name="name">Warranty Manager</field>
-    <field name="category_id" ref="base.module_category_services"/>
+    <field name="category_id" ref="warranty_management.module_category_warranty"/>
     <field name="implied_ids" eval="[(4, ref('group_warranty_user'))]"/>
   </record>
 </odoo>
+
