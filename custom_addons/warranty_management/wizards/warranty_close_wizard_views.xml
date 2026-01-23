@@ -8,7 +8,7 @@
         <field name="arch" type="xml">
             <form string="Close Warranty Ticket">
                 <group>
-                    <field name="ticket_id" invisible="1"/>
+                    <field name="ticket_id"/>
                     <field name="close_reason" widget="radio"/>
                     <field name="close_date"/>
                     <field name="notes" placeholder="Enter detailed notes about the resolution..."/>
@@ -33,6 +33,7 @@
         <field name="view_mode">form</field>
         <field name="target">new</field>
         <field name="binding_model_id" ref="model_warranty_ticket"/>
+        <field name="context">{'default_ticket_id': active_id}</field>
     </record>
 
 </odoo>
