@@ -23,7 +23,7 @@ odoo.define('warranty_management.rpc_example', function (require) {
                 method: 'search_read',
                 args: [[]],  // domain
                 kwargs: {
-                    fields: ['name', 'customer_id', 'product_id', 'status'],
+                    fields: ['name', 'customer_id', 'product_id', 'state'],
                     limit: 10,
                 }
             }).then(function (tickets) {
