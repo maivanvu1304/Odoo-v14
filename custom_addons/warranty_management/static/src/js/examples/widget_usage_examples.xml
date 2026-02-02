@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        ========================================================================
+        XML USAGE EXAMPLES - Cách sử dụng các custom widgets
+        ========================================================================
+        
+        File này chứa ví dụ cách sử dụng các custom widgets trong views
+    -->
+    
+    <!-- 
+        ========================================================================
+        1. MANY2MANY CUSTOM TAGS WIDGET
+        ========================================================================
+    -->
+    <record id="view_warranty_ticket_form_with_many2many" model="ir.ui.view">
+        <field name="name">warranty.ticket.form.many2many.example</field>
+        <field name="model">warranty.ticket</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        
+                        <!-- Sử dụng Many2many custom tags widget -->
+                        <field name="spare_part_ids" 
+                               widget="many2many_custom_tags"
+                               options="{'color': 'success', 'allow_create': true}"/>
+                        
+                        <!-- Hoặc với màu khác -->
+                        <field name="technician_ids" 
+                               widget="many2many_custom_tags"
+                               options="{'color': 'primary'}"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- 
+        ========================================================================
+        2. ONE2MANY CUSTOM LIST WIDGET
+        ========================================================================
+    -->
+    <record id="view_warranty_ticket_form_with_one2many" model="ir.ui.view">
+        <field name="name">warranty.ticket.form.one2many.example</field>
+        <field name="model">warranty.ticket</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        
+                        <!-- Sử dụng One2many custom list widget -->
+                        <field name="service_line_ids" widget="one2many_custom_list">
+                            <!-- Định nghĩa columns cho bảng -->
+                            <tree editable="bottom">
+                                <field name="service_name"/>
+                                <field name="description"/>
+                                <field name="quantity"/>
+                                <field name="price"/>
+                            </tree>
+                        </field>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- 
+        ========================================================================
+        3. EDITABLE RATING WIDGET
+        ========================================================================
+    -->
+    <record id="view_warranty_ticket_form_with_rating" model="ir.ui.view">
+        <field name="name">warranty.ticket.form.rating.example</field>
+        <field name="model">warranty.ticket</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        
+                        <!-- Rating widget - 5 sao -->
+                        <field name="customer_rating" 
+                               widget="editable_rating"
+                               options="{'max_rating': 5}"/>
+                        
+                        <!-- Rating widget - 10 sao với half stars -->
+                        <field name="service_quality" 
+                               widget="editable_rating"
+                               options="{'max_rating': 10, 'allow_half': true}"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- 
+        ========================================================================
+        4. EDITABLE PROGRESS WIDGET
+        ========================================================================
+    -->
+    <record id="view_warranty_ticket_form_with_progress" model="ir.ui.view">
+        <field name="name">warranty.ticket.form.progress.example</field>
+        <field name="model">warranty.ticket</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        
+                        <!-- Progress bar widget -->
+                        <field name="completion_progress" 
+                               widget="editable_progress"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- 
+        ========================================================================
+        5. CHART.JS WIDGET
+        ========================================================================
+    -->
+    <record id="view_warranty_ticket_form_with_chart" model="ir.ui.view">
+        <field name="name">warranty.ticket.form.chart.example</field>
+        <field name="model">warranty.ticket</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        
+                        <!-- Bar chart -->
+                        <field name="statistics_data" 
+                               widget="chart_widget"
+                               options="{'chart_type': 'bar', 'height': 400}"/>
+                        
+                        <!-- Pie chart -->
+                        <field name="cost_breakdown" 
+                               widget="chart_widget"
+                               options="{'chart_type': 'pie'}"/>
+                        
+                        <!-- Line chart -->
+                        <field name="timeline_data" 
+                               widget="chart_widget"
+                               options="{'chart_type': 'line'}"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- 
+        ========================================================================
+        6. LIFECYCLE DEMO WIDGET
+        ========================================================================
+    -->
+    <record id="view_warranty_ticket_form_with_lifecycle" model="ir.ui.view">
+        <field name="name">warranty.ticket.form.lifecycle.example</field>
+        <field name="model">warranty.ticket</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        
+                        <!-- Lifecycle demo widget -->
+                        <field name="demo_field" 
+                               widget="lifecycle_demo"
+                               options="{'debug': true}"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- 
+        ========================================================================
+        7. COMBINED EXAMPLE - Sử dụng nhiều widgets trong một form
+        ========================================================================
+    -->
+    <record id="view_warranty_ticket_form_combined" model="ir.ui.view">
+        <field name="name">warranty.ticket.form.combined.example</field>
+        <field name="model">warranty.ticket</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Ticket Number"/>
+                        </h1>
+                    </div>
+                    
+                    <group>
+                        <group string="Basic Information">
+                            <field name="customer_id"/>
+                            <field name="product_id"/>
+                            
+                            <!-- Progress widget -->
+                            <field name="completion_progress" widget="editable_progress"/>
+                            
+                            <!-- Rating widget -->
+                            <field name="customer_rating" widget="editable_rating"/>
+                        </group>
+                        
+                        <group string="Resources">
+                            <!-- Many2many tags -->
+                            <field name="spare_part_ids" 
+                                   widget="many2many_custom_tags"
+                                   options="{'color': 'info'}"/>
+                            
+                            <field name="technician_ids" 
+                                   widget="many2many_custom_tags"
+                                   options="{'color': 'warning'}"/>
+                        </group>
+                    </group>
+                    
+                    <notebook>
+                        <page string="Service Lines">
+                            <!-- One2many list -->
+                            <field name="service_line_ids" widget="one2many_custom_list">
+                                <tree editable="bottom">
+                                    <field name="service_name"/>
+                                    <field name="quantity"/>
+                                    <field name="price"/>
+                                </tree>
+                            </field>
+                        </page>
+                        
+                        <page string="Statistics">
+                            <!-- Chart widget -->
+                            <field name="statistics_data" 
+                                   widget="chart_widget"
+                                   options="{'chart_type': 'bar', 'height': 300}"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>

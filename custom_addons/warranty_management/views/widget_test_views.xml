@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        ========================================================================
+        WIDGET TEST VIEW - Form view để test tất cả các widgets
+        ========================================================================
+    -->
+    
+    <record id="view_warranty_ticket_widget_test_form" model="ir.ui.view">
+        <field name="name">warranty.ticket.widget.test.form</field>
+        <field name="model">warranty.ticket</field>
+        <field name="priority">100</field>
+        <field name="arch" type="xml">
+            <form string="Widget Test Form">
+                <header>
+                    <button name="action_confirm" string="Confirm" type="object" 
+                            class="btn-primary" states="draft"/>
+                    <button name="action_start" string="Start" type="object" 
+                            class="btn-primary" states="confirmed"/>
+                    <button name="action_done" string="Done" type="object" 
+                            class="btn-success" states="in_progress"/>
+                    <button name="action_cancel" string="Cancel" type="object" 
+                            states="draft,confirmed,in_progress"/>
+                    <field name="state" widget="statusbar" 
+                           statusbar_visible="draft,confirmed,in_progress,done"/>
+                </header>
+                
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    
+                    <group>
+                        <group string="Basic Information">
+                            <field name="customer_id"/>
+                            <field name="product_id"/>
+                            <field name="serial_no"/>
+                        </group>
+                        <group string="Warranty Info">
+                            <field name="purchase_date"/>
+                            <field name="warranty_months"/>
+                            <field name="expire_date"/>
+                        </group>
+                    </group>
+                    
+                    <notebook>
+                        <!-- TAB 1: MANY2MANY WIDGETS TEST -->
+                        <page string="🏷️ Many2many Widgets" name="many2many_test">
+                            <group>
+                                <group string="Spare Parts (Many2many Custom Tags)">
+                                    <field name="spare_part_ids" 
+                                           widget="many2many_custom_tags"
+                                           options="{'color': 'success', 'allow_create': true}"
+                                           nolabel="1"/>
+                                    <p class="text-muted">
+                                        <i class="fa fa-info-circle"/> Test: Click "Add Item" để thêm spare parts. 
+                                        Click X để xóa. Màu xanh lá cây (success).
+                                    </p>
+                                </group>
+                                
+                                <group string="Technicians (Many2many Custom Tags)">
+                                    <field name="technician_ids" 
+                                           widget="many2many_custom_tags"
+                                           options="{'color': 'primary', 'allow_create': true}"
+                                           nolabel="1"/>
+                                    <p class="text-muted">
+                                        <i class="fa fa-info-circle"/> Test: Thêm nhiều technicians. 
+                                        Màu xanh dương (primary).
+                                    </p>
+                                </group>
+                            </group>
+                        </page>
+                        
+                        <!-- TAB 2: ONE2MANY WIDGET TEST -->
+                        <page string="📋 One2many Widget" name="one2many_test">
+                            <group>
+                                <field name="service_line_ids" widget="one2many_custom_list" nolabel="1">
+                                    <tree editable="bottom">
+                                        <field name="sequence" widget="handle"/>
+                                        <field name="service_name"/>
+                                        <field name="description"/>
+                                        <field name="quantity"/>
+                                        <field name="price"/>
+                                        <field name="subtotal"/>
+                                    </tree>
+                                </field>
+                                <p class="text-muted">
+                                    <i class="fa fa-info-circle"/> Test: Click "Add a line" để thêm dịch vụ. 
+                                    Click Edit/Delete để sửa/xóa. Xem table được render như thế nào.
+                                </p>
+                            </group>
+                        </page>
+                        
+                        <!-- TAB 3: EDITABLE WIDGETS (RATING & PROGRESS) -->
+                        <page string="⭐ Editable Widgets" name="editable_test">
+                            <group>
+                                <group string="Rating Widgets">
+                                    <label for="customer_rating"/>
+                                    <div>
+                                        <field name="customer_rating" 
+                                               widget="editable_rating"
+                                               options="{'max_rating': 5}"
+                                               nolabel="1"/>
+                                        <p class="text-muted">
+                                            <i class="fa fa-info-circle"/> Test: Click vào stars để set rating 1-5. 
+                                            Readonly mode: Không click được.
+                                        </p>
+                                    </div>
+                                    
+                                    <label for="service_quality"/>
+                                    <div>
+                                        <field name="service_quality" 
+                                               widget="editable_rating"
+                                               options="{'max_rating': 10, 'allow_half': true}"
+                                               nolabel="1"/>
+                                        <p class="text-muted">
+                                            <i class="fa fa-info-circle"/> Test: Rating 0-10 với half stars. 
+                                            Click trái/phải của star để set half.
+                                        </p>
+                                    </div>
+                                </group>
+                                
+                                <group string="Progress Bar Widget">
+                                    <label for="completion_progress"/>
+                                    <div>
+                                        <field name="completion_progress" 
+                                               widget="editable_progress"
+                                               nolabel="1"/>
+                                        <p class="text-muted">
+                                            <i class="fa fa-info-circle"/> Test: Click vào progress bar để set %. 
+                                            Màu tự động: đỏ (0-30), vàng (30-70), xanh (70-100).
+                                        </p>
+                                    </div>
+                                </group>
+                            </group>
+                        </page>
+                        
+                        <!-- TAB 4: CHART WIDGET -->
+                        <page string="📊 Chart Widget" name="chart_test">
+                            <group>
+                                <group string="Bar Chart (Statistics Data)">
+                                    <field name="chart_data" 
+                                           widget="chart_widget"
+                                           options="{'chart_type': 'bar', 'height': 300}"
+                                           nolabel="1"/>
+                                    <p class="text-muted">
+                                        <i class="fa fa-info-circle"/> Test: Cần set JSON data vào field chart_data. 
+                                        Xem phần Demo Data bên dưới.
+                                    </p>
+                                </group>
+                                
+                                <group string="Pie Chart (Cost Breakdown)">
+                                    <field name="cost_breakdown" 
+                                           widget="chart_widget"
+                                           options="{'chart_type': 'pie', 'height': 300}"
+                                           nolabel="1"/>
+                                    <p class="text-muted">
+                                        <i class="fa fa-info-circle"/> Test: Set JSON data cho pie chart. 
+                                        Chart.js sẽ được load tự động.
+                                    </p>
+                                </group>
+                            </group>
+                        </page>
+                        
+                        <!-- TAB 5: LIFECYCLE DEMO -->
+                        <page string="🔄 Lifecycle Demo" name="lifecycle_test">
+                            <group>
+                                <group string="Widget Lifecycle Demonstration">
+                                    <field name="demo_field" 
+                                           widget="lifecycle_demo"
+                                           options="{'debug': true}"/>
+                                    <p class="alert alert-info">
+                                        <i class="fa fa-info-circle"/> <strong>Hướng dẫn test:</strong><br/>
+                                        1. Mở Console (F12)<br/>
+                                        2. Xem các lifecycle methods được gọi theo thứ tự<br/>
+                                        3. Edit field này và xem updateState() được gọi<br/>
+                                        4. Chuyển tab và quay lại để xem on_attach/on_detach<br/>
+                                        5. Save form để xem các events
+                                    </p>
+                                </group>
+                            </group>
+                        </page>
+                        
+                        <!-- TAB 6: DEMO DATA HELPER -->
+                        <page string="💡 Demo Data" name="demo_data_helper">
+                            <group>
+                                <group string="JSON Data for Chart Widget">
+                                    <p class="alert alert-warning">
+                                        <strong>Copy JSON này và paste vào fields:</strong>
+                                    </p>
+                                    
+                                    <div class="o_group">
+                                        <span class="o_form_label">For chart_data (Bar Chart):</span>
+                                        <pre style="background: #f5f5f5; padding: 10px; border-radius: 4px;">
+{
+  "labels": ["Jan", "Feb", "Mar", "Apr", "May"],
+  "datasets": [{
+    "label": "Tickets Resolved",
+    "data": [12, 19, 8, 15, 22],
+    "backgroundColor": "rgba(54, 162, 235, 0.5)"
+  }]
+}
+                                        </pre>
+                                    </div>
+                                    
+                                    <div class="o_group">
+                                        <span class="o_form_label">For cost_breakdown (Pie Chart):</span>
+                                        <pre style="background: #f5f5f5; padding: 10px; border-radius: 4px;">
+{
+  "labels": ["Labor", "Parts", "Shipping", "Other"],
+  "datasets": [{
+    "data": [300, 150, 50, 100],
+    "backgroundColor": [
+      "rgba(255, 99, 132, 0.7)",
+      "rgba(54, 162, 235, 0.7)",
+      "rgba(255, 206, 86, 0.7)",
+      "rgba(75, 192, 192, 0.7)"
+    ]
+  }]
+}
+                                        </pre>
+                                    </div>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    
+    <!-- Menu Action để mở test form -->
+    <record id="action_warranty_ticket_widget_test" model="ir.actions.act_window">
+        <field name="name">🧪 Widget Test Lab</field>
+        <field name="res_model">warranty.ticket</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="view_warranty_ticket_widget_test_form"/>
+        <field name="context">{}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a warranty ticket to test widgets
+            </p>
+            <p>
+                This is a special form view for testing all JavaScript widgets.
+            </p>
+        </field>
+    </record>
+    
+    <!-- Menu item -->
+    <menuitem id="menu_warranty_widget_test"
+              name="🧪 Widget Test Lab"
+              parent="warranty_management.menu_warranty_root"
+              action="action_warranty_ticket_widget_test"
+              sequence="99"/>
+
+</odoo>

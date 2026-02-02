@@ -25,21 +25,24 @@
 
     # always loaded
     'data': [
+        # Security files (must be first)
         "security/warranty_security.xml",
         "security/security.xml",
         "security/ir.model.access.csv",
+
         "data/sequence.xml",
+
         "report/warranty_ticket_report.xml",
+
         "views/warranty_ticket_views.xml",
         "views/warranty_partner_views.xml",
         "views/warranty_web_templates.xml",
+        "views/widget_test_views.xml",
         "views/assets.xml",
         "wizards/warranty_close_wizard_views.xml",
         "wizards/warranty_report_wizard_views.xml",
     ],
-    'qweb': [
-        "static/src/xml/warranty_dashboard.xml",
-    ],
+
     # only loaded in demonstration mode
     'demo': [
         'demo/demo.xml',

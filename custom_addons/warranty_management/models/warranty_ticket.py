@@ -56,6 +56,63 @@ class WarrantyTicket(models.Model):
     line_ids = fields.One2many("warranty.ticket.line", "ticket_id", string="Lines")
     line_count = fields.Integer(string="Line Count", compute="_compute_line_count", store=True)
 
+    # ===== TEST FIELDS FOR WIDGET EXAMPLES =====
+    # Many2many widget test
+    spare_part_ids = fields.Many2many(
+        "product.product",
+        "warranty_spare_part_rel",
+        "ticket_id",
+        "product_id",
+        string="Spare Parts",
+    )
+    technician_ids = fields.Many2many(
+        "res.users",
+        "warranty_technician_rel",
+        "ticket_id",
+        "user_id",
+        string="Technicians",
+    )
+
+    # One2many widget test (service lines)
+    service_line_ids = fields.One2many(
+        "warranty.service.line",
+        "ticket_id",
+        string="Service Lines",
+    )
+
+    # Rating widget test
+    customer_rating = fields.Integer(
+        string="Customer Rating",
+        help="Customer satisfaction rating (1-5 stars)",
+    )
+    service_quality = fields.Float(
+        string="Service Quality",
+        help="Service quality rating (0-10, supports half stars)",
+    )
+
+    # Progress widget test
+    completion_progress = fields.Float(
+        string="Completion Progress (%)",
+        default=0.0,
+        help="Repair completion progress (0-100)",
+    )
+
+    # Chart widget test (stores JSON data)
+    chart_data = fields.Text(
+        string="Statistics Data",
+        help="JSON data for chart widget",
+    )
+    cost_breakdown = fields.Text(
+        string="Cost Breakdown Data",
+        help="JSON data for pie chart",
+    )
+
+    # Lifecycle demo widget test
+    demo_field = fields.Char(
+        string="Demo Field",
+        help="Field for testing widget lifecycle",
+    )
+
     @api.depends("purchase_date", "warranty_months")
     def _compute_expire_date(self):
         for rec in self:

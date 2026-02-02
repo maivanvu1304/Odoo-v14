@@ -16,5 +16,15 @@
             <script type="text/javascript" src="/warranty_management/static/src/js/warranty_portal.js"/>
         </xpath>
     </template>
-
+    
+    <template id="assets_backend" inherit_id="web.assets_backend">
+        <xpath expr="." position="inside">
+            <!-- Widget examples -->
+            <script src="/warranty_management/static/src/js/examples/many2many_widget_example.js" type="text/javascript"/>
+            <script src="/warranty_management/static/src/js/examples/one2many_widget_example.js" type="text/javascript"/>
+            <script src="/warranty_management/static/src/js/examples/editable_widget_example.js" type="text/javascript"/>
+            <script src="/warranty_management/static/src/js/examples/external_library_widgets.js" type="text/javascript"/>
+            <script src="/warranty_management/static/src/js/examples/widget_lifecycle_demo.js" type="text/javascript"/>
+        </xpath>
+    </template>
 </odoo>
